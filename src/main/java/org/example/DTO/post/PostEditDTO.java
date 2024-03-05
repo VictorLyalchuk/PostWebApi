@@ -5,7 +5,8 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 @Data
-public class PostCreateDTO {
+public class PostEditDTO {
+    private int id;
     private String title;
     private String shortDescription;
     private String description;
