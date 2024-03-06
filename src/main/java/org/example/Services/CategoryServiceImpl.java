@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(int id) throws IOException {
         var entity = categoryRepository.findById(id).orElse(null);
         if (categoryRepository.existsById(id)) {
-            categoryRepository.save(entity);
+//            categoryRepository.save(entity);
             categoryRepository.deleteById(id);
         }
     }

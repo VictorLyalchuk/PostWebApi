@@ -27,7 +27,7 @@ public class PostImageEntity {
     private LocalDateTime dateCreated;
 
     @ManyToOne( fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="product_id", nullable = false)
+    @JoinColumn(name="post_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PostEntity post;
 }

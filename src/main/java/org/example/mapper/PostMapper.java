@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 public interface PostMapper {
     @Mapping(source = "category.name", target = "category")
     @Mapping(source = "category.id", target = "category_id")
-    PostItemDTO productItemDTO(PostEntity post);
+    PostItemDTO postItemDTO(PostEntity post);
     @Mapping(source = "category.name", target = "category")
     @Mapping(source = "category.id", target = "category_id")
     PostEntity postCreateDTO(PostCreateDTO post);
