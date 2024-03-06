@@ -12,6 +12,6 @@ public interface PostService {
     PostItemDTO getById(int id);
     PostSearchDTO searchGetAllPost(int categoryId, String tag, int page, int size);
     PostItemDTO create(PostCreateDTO model);
-    PostItemDTO editProduct(PostEditDTO dto) throws IOException;
-    void deleteProduct(int id) throws IOException;
+    PostItemDTO editPost(PostEditDTO dto) throws IOException;
+    void deletePost(int id) throws IOException;
 }
