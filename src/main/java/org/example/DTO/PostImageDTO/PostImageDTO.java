@@ -1,4 +1,4 @@
-package org.example.DTO.post;
+package org.example.DTO.PostImageDTO;
 
 import lombok.Data;
 

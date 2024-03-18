@@ -45,4 +45,7 @@ public class PostEntity {
 
     @OneToMany(mappedBy="post")
     private List<PostImageEntity> postImages;
+
+    @OneToMany(mappedBy = "post")
+    private List<TagEntity> tags;
 }

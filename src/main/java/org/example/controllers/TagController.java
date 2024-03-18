@@ -1,63 +1,66 @@
 package org.example.controllers;
 
 import lombok.AllArgsConstructor;
-import org.example.DTO.category.CategoryCreateDTO;
-import org.example.DTO.category.CategoryEditDTO;
-import org.example.DTO.category.CategoryItemDTO;
+import org.example.DTO.tag.TagCreateDTO;
+import org.example.DTO.tag.TagEditDTO;
+import org.example.DTO.tag.TagItemDTO;
 import org.example.Services.CategoryService;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.example.Services.TagService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/categories")
-public class CategoryController {
+@RequestMapping("api/tags")
+public class TagController {
+    private final TagService tagService;
+
     private final CategoryService categoryService;
 
     @GetMapping("/{id}")
-    public ResponseEntity <CategoryItemDTO> getById(@PathVariable int id) {
-        var result = categoryService.getById(id);
+    public ResponseEntity<TagItemDTO> getById(@PathVariable int id) {
+        var result = tagService.getById(id);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    @GetMapping("/search")
-    public ResponseEntity<Page<CategoryItemDTO>> searchByName(@RequestParam String name, Pageable pageable) {
+    @GetMapping()
+    public ResponseEntity<List<TagItemDTO>> gtAll() {
         try {
-            Page<CategoryItemDTO> categories = categoryService.getAllByName(name, pageable);
-            return new ResponseEntity<>(categories, HttpStatus.OK);
+            List<TagItemDTO> tags = tagService.getAll();
+            return new ResponseEntity<>(tags, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CategoryItemDTO> create(@ModelAttribute CategoryCreateDTO dto) {
+    public ResponseEntity<TagItemDTO> create(@ModelAttribute TagCreateDTO dto) {
         try {
-            var result = categoryService.create(dto);
+            var result = tagService.create(dto);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryItemDTO> editCategory(@ModelAttribute CategoryEditDTO dto) {
+    public ResponseEntity<TagItemDTO> editTag(@ModelAttribute TagEditDTO dto) {
         try {
-            var result = categoryService.editCategory(dto);
+            var result = tagService.editTag(dto);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCategory(@PathVariable int id) throws IOException {
+    public ResponseEntity<String> deleteTag(@PathVariable int id) throws IOException {
         try {
-            categoryService.deleteCategory(id);
+            tagService.deleteTag(id);
             return new ResponseEntity<>("Success", HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>("Error", HttpStatus.INTERNAL_SERVER_ERROR);

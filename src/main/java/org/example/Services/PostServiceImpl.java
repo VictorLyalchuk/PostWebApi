@@ -8,21 +8,28 @@ import org.example.DTO.post.PostCreateDTO;
 import org.example.DTO.post.PostEditDTO;
 import org.example.DTO.post.PostItemDTO;
 import org.example.DTO.post.PostSearchDTO;
-import org.example.entities.CategoryEntity;
 import org.example.entities.PostEntity;
 import org.example.entities.PostImageEntity;
+import org.example.entities.TagEntity;
 import org.example.mapper.PostImageMapper;
 import org.example.mapper.PostMapper;
 import org.example.repositories.PostImageRepository;
 import org.example.repositories.PostRepository;
 import org.example.storage.FileSaveFormat;
 import org.example.storage.StorageService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.example.specifications.PostEntitySpecifications.findByCategoryId;
+import static org.example.specifications.PostEntitySpecifications.findByTag;
 
 @Service
 @AllArgsConstructor
@@ -30,7 +37,6 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
     private final StorageService storageService;
-    private final CategoryService categoryService;
     private final PostMapper postMapper;
     private final PostImageMapper postImageMapper;
     @Override
@@ -39,6 +45,11 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
 
         PostItemDTO postItemDTO = postMapper.postItemDTO(postEntity);
+
+//        List<String> tags = postEntity.getTags().stream()
+//                .map(TagEntity::getName)
+//                .collect(Collectors.toList());
+//        postItemDTO.setTags(tags);
 
         var items = new ArrayList<String>();
         for (var img : postEntity.getPostImages()) {
@@ -51,7 +62,28 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostSearchDTO searchGetAllPost(int categoryId, String tag, int page, int size) {
-        return null;
+        Page<PostEntity> result = postRepository
+                .findAll(findByCategoryId(categoryId).and(findByTag(tag)),
+                        PageRequest.of(page, size));
+
+        List<PostItemDTO> products = result.getContent().stream()
+                .map(product -> {
+                    PostItemDTO postItemDTO = postMapper.postItemDTO(product);
+
+//                    List<TagEntity> tags = product.getTags();
+//                    List<String> tagNames = tags.stream()
+//                            .map(TagEntity::getName)
+//                            .collect(Collectors.toList());
+//                    postItemDTO.setTags(tagNames);
+
+                    List<String> imageNames = postImageRepository.findImageNamesByPost(product);
+                    postItemDTO.setFiles(imageNames);
+
+                    return postItemDTO;
+                })
+                .collect(Collectors.toList());
+
+        return new PostSearchDTO(products, (int) result.getTotalElements());
     }
 
     @Override

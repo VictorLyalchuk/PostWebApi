@@ -4,7 +4,6 @@ import org.example.DTO.category.CategoryCreateDTO;
 import org.example.DTO.category.CategoryItemDTO;
 import org.example.entities.CategoryEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

@@ -1,6 +1,8 @@
 package org.example.DTO.post;
 
 import lombok.Data;
+import org.example.DTO.tag.TagItemDTO;
+import org.example.entities.TagEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,4 +16,6 @@ public class PostItemDTO {
     private String category;
     private int category_id;
     private List<String> files = new ArrayList<>();
+    private List<TagItemDTO> tags = new ArrayList<>();
+
 }

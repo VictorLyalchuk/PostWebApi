@@ -14,15 +14,10 @@ public class PostEntitySpecifications {
         };
     }
 
-    public static Specification<PostEntity> findByName(String name) {
+    public static Specification<PostEntity> findByTag(String tag) {
         return (root, query, cb) -> {
-            return cb.like(root.get("name"), "%"+name+"%");
+            return cb.like(root.get("tag"), "%"+tag+"%");
         };
     }
 
-    public static Specification<PostEntity> findByDescription(String description) {
-        return (root, query, cb) -> {
-            return cb.like(root.get("description"), "%"+description+"%");
-        };
-    }
 }

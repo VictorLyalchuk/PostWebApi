@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface PostImageRepository extends JpaRepository<PostImageEntity, Integer> {
     PostImageEntity findByName(String name);
-    @Query("SELECT pi.name FROM ProductImageEntity pi WHERE pi.product = :product")
-    List<String> findImageNamesByProduct(@Param("product") PostEntity product);
+    @Query("SELECT pi.name FROM PostImageEntity pi WHERE pi.post = :post")
+    List<String> findImageNamesByPost(@Param("post") PostEntity post);
 }
