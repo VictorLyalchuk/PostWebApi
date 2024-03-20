@@ -11,7 +11,7 @@ public class PostCreateDTO {
     private String title;
     private String shortDescription;
     private String description;
-    private String category;
+    private String category_name;
     private int category_id;
     private List<PostImageDTO> files = new ArrayList<>();
     private List<TagItemDTO> tags = new ArrayList<>();

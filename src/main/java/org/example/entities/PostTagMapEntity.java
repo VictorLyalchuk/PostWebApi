@@ -10,16 +10,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="tbl_post_tag_map")
+@IdClass(PostTagPK.class)
 public class PostTagMapEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "post_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id", nullable = false)
     private PostEntity post;
 
-    @ManyToOne
-    @JoinColumn(name = "tag_id")
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tag_id", nullable = false)
     private TagEntity tag;
 }

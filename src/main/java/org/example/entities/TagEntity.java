@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,6 +21,6 @@ public class TagEntity {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<PostEntity> posts;
+    @OneToMany(mappedBy = "tag")
+    private List<PostTagMapEntity> postTags = new ArrayList<>();
 }

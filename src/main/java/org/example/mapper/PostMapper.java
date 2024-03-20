@@ -7,11 +7,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface PostMapper {
-    @Mapping(source = "category.name", target = "category")
-    @Mapping(source = "category.id", target = "category_id")
 
+    @Mapping(source = "category.name", target = "category_name")
+    @Mapping(source = "category.id", target = "category_id")
     PostItemDTO postItemDTO(PostEntity post);
     PostEntity postCreateDTO(PostCreateDTO postCreateDTO);
+
 
 //    default List<String> mapTags(List<TagEntity> tags) {
 //        return tags.stream()

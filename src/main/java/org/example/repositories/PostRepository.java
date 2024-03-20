@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface PostRepository extends JpaRepository<PostEntity, Integer>, JpaSpecificationExecutor<PostEntity> {
 
     @Query("SELECT p FROM PostEntity p WHERE LOWER(p.category.name) LIKE LOWER(:category) " +
-            "AND LOWER(p.tag) LIKE LOWER(:tag)")
+            "AND LOWER(p.postTags) LIKE LOWER(:tag)")
     Page<PostEntity> searchPosts(
             @Param("category") String category,
             @Param("tag") String tag,
