@@ -16,7 +16,7 @@ public class PostEntitySpecifications {
 
     public static Specification<PostEntity> findByTag(String tag) {
         return (root, query, cb) -> {
-            return cb.like(root.get("tag"), "%"+tag+"%");
+            return cb.like(root.get("postTags").get("tag").get("name"), "%"+tag+"%");
         };
     }
 
