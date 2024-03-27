@@ -1,5 +1,6 @@
 package org.example.controllers;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import org.example.DTO.post.PostCreateDTO;
@@ -7,6 +8,9 @@ import org.example.DTO.post.PostEditDTO;
 import org.example.DTO.post.PostItemDTO;
 import org.example.DTO.post.PostSearchDTO;
 import org.example.Services.PostService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,19 +33,22 @@ public class PostController {
     }
     @GetMapping("/search")
     public ResponseEntity<PostSearchDTO> searchByName(
-            @RequestParam (defaultValue = "0")int categoryId,
+            @RequestParam (defaultValue = "")String category,
             @RequestParam (defaultValue = "")String tag,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         try {
-            PostSearchDTO posts = postService.searchGetAllPost(categoryId, tag, page, size);
+            Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+            PostSearchDTO posts = postService.searchGetAllPost(category, tag, pageable);
             return new ResponseEntity<>(posts, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostItemDTO> create(@ModelAttribute PostCreateDTO dto) {
+//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostItemDTO> create(@Valid @ModelAttribute PostCreateDTO dto) {
         try {
             var result = postService.create(dto);
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -49,8 +56,8 @@ public class PostController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<PostItemDTO> editPost(@ModelAttribute PostEditDTO dto) {
+    @PutMapping
+    public ResponseEntity<PostItemDTO> editPost(@RequestBody PostEditDTO dto) {
         try {
             var result = postService.editPost(dto);
             return new ResponseEntity<>(result, HttpStatus.OK);

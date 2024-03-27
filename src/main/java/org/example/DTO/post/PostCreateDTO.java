@@ -1,8 +1,9 @@
 package org.example.DTO.post;
 
 import lombok.Data;
-import org.example.DTO.PostImageDTO.PostImageDTO;
+import org.example.DTO.postImage.PostImageDTO;
 import org.example.DTO.tag.TagItemDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,6 @@ public class PostCreateDTO {
     private String description;
     private String category_name;
     private int category_id;
-    private List<PostImageDTO> files = new ArrayList<>();
-    private List<TagItemDTO> tags = new ArrayList<>();
+    private List<MultipartFile> files = new ArrayList<>();
+    private List<Integer> tags = new ArrayList<>();
 }

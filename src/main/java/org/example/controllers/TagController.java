@@ -6,10 +6,14 @@ import org.example.DTO.tag.TagEditDTO;
 import org.example.DTO.tag.TagItemDTO;
 import org.example.Services.CategoryService;
 import org.example.Services.TagService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.PageRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +37,19 @@ public class TagController {
     @GetMapping()
     public ResponseEntity<List<TagItemDTO>> gtAll() {
         try {
-            List<TagItemDTO> tags = tagService.getAll();
+            List<TagItemDTO> tags = tagService.getAll(Sort.by("id"));
+            return new ResponseEntity<>(tags, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/byPage")
+    public ResponseEntity<Page<TagItemDTO>> getAllByPage(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                         @RequestParam(value = "size", defaultValue = "10") int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+
+            Page<TagItemDTO> tags = tagService.getAllByPage(pageable);
             return new ResponseEntity<>(tags, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

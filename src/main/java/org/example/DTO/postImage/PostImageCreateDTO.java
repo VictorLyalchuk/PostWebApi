@@ -1,4 +1,4 @@
-package org.example.DTO.PostImageDTO;
+package org.example.DTO.postImage;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;

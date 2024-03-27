@@ -1,6 +1,6 @@
 package org.example.mapper;
 
-import org.example.DTO.PostImageDTO.PostImageItemDTO;
+import org.example.DTO.postImage.PostImageItemDTO;
 import org.example.entities.PostImageEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

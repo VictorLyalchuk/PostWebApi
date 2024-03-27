@@ -1,9 +1,8 @@
-package org.example.DTO.PostImageDTO;
+package org.example.DTO.postImage;
 
 import lombok.Data;
 
 @Data
 public class PostImageDTO {
-    private int id;
     private String name;
 }

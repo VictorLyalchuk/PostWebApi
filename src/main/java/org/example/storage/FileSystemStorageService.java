@@ -5,11 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.UUID;
 @Service
 public class FileSystemStorageService implements StorageService {
@@ -35,6 +38,20 @@ public class FileSystemStorageService implements StorageService {
         }
         return randomName;
     }
+
+    @Override
+    public String SaveImageURL(String imageUrl, FileSaveFormat format) throws IOException {
+        String ext = format.name().toLowerCase();
+        String randomName = UUID.randomUUID().toString() + "." + ext;
+        int[] sizes = {32, 150, 300, 600, 1200};
+        URL url = new URL(imageUrl);
+        BufferedImage bufferedImage = ImageIO.read(url);
+        for (int size : sizes) {
+            String fileSave = rootLocation.toString() + "/" + size + "_" + randomName;
+            Thumbnails.of(bufferedImage).size(size, size).outputFormat(ext).toFile(fileSave);
+        }
+        return randomName;
+    }
     @Override
     public void deleteImage(String fileName) throws IOException {
         Path filePath = rootLocation.resolve(fileName);
@@ -43,6 +60,29 @@ public class FileSystemStorageService implements StorageService {
             Path fileToDelete = filePath.resolveSibling(size + "_" + fileName);
 
             Files.deleteIfExists(fileToDelete);
+        }
+    }
+    @Override
+    public String SaveImageBase64(String base64, FileSaveFormat format) {
+        try {
+            String ext = format.name().toLowerCase();
+            String randomFileName = UUID.randomUUID().toString() + "."+ext;
+            int [] sizes = {32,150,300,600,1200};
+
+            var bytes = Base64.getDecoder().decode(base64);
+
+            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(bytes));
+            for(int size: sizes) {
+                String fileSave = rootLocation.toString()+"/"+size+"_"+randomFileName;
+                Thumbnails.of(bufferedImage)
+                        .size(size, size)
+                        .outputFormat(ext)
+                        .toFile(fileSave);
+            }
+            return randomFileName;
+        } catch (IOException ex) {
+            System.out.println("Помилка кодування файлу "+ ex.getMessage());
+            return null;
         }
     }
 }

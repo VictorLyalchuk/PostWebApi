@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import org.example.DTO.category.CategoryCreateDTO;
 import org.example.DTO.category.CategoryEditDTO;
 import org.example.DTO.category.CategoryItemDTO;
+import org.example.DTO.tag.TagItemDTO;
 import org.example.Services.CategoryService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -27,9 +31,21 @@ public class CategoryController {
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    @GetMapping("/search")
-    public ResponseEntity<Page<CategoryItemDTO>> searchByName(@RequestParam String name, Pageable pageable) {
+    @GetMapping()
+    public ResponseEntity<List<CategoryItemDTO>> gtAll() {
         try {
+            List<CategoryItemDTO> categories = categoryService.getAll(Sort.by("id"));
+            return new ResponseEntity<>(categories, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/search")
+    public ResponseEntity<Page<CategoryItemDTO>> searchByName(@RequestParam (defaultValue = "")String name,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "5") int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
             Page<CategoryItemDTO> categories = categoryService.getAllByName(name, pageable);
             return new ResponseEntity<>(categories, HttpStatus.OK);
         } catch (Exception ex) {

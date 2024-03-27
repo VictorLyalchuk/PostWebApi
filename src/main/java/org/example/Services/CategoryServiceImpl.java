@@ -5,9 +5,12 @@ import lombok.AllArgsConstructor;
 import org.example.DTO.category.CategoryCreateDTO;
 import org.example.DTO.category.CategoryEditDTO;
 import org.example.DTO.category.CategoryItemDTO;
+import org.example.DTO.tag.TagItemDTO;
 import org.example.entities.CategoryEntity;
+import org.example.entities.TagEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.example.repositories.CategoryRepository;
 import org.example.mapper.CategoryMapper;
@@ -24,6 +27,11 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryItemDTO getById(int id){
         var result =  categoryMapper.categoryItemDTO(categoryRepository.findById(id).orElse(null));
         return result;
+    }
+    @Override
+    public List<CategoryItemDTO> getAll(Sort sort) {
+        List<CategoryEntity> categories = categoryRepository.findAll(sort);
+        return categoryMapper.categoriesListItemDTO(categories);
     }
     @Override
     public Page<CategoryItemDTO> getAllByName(String name, Pageable pageable) {

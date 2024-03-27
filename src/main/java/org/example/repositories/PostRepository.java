@@ -1,6 +1,5 @@
 package org.example.repositories;
 
-import org.example.entities.CategoryEntity;
 import org.example.entities.PostEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

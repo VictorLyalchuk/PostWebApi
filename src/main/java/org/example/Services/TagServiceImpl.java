@@ -7,11 +7,14 @@ import org.example.DTO.tag.TagItemDTO;
 import org.example.entities.TagEntity;
 import org.example.mapper.TagMapper;
 import org.example.repositories.TagRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
@@ -25,11 +28,15 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
-    public List<TagItemDTO> getAll() {
-        List<TagEntity> tags = tagRepository.findAll();
+    public List<TagItemDTO> getAll(Sort sort) {
+        List<TagEntity> tags = tagRepository.findAll(sort);
         return tagMapper.tagListItemDTO(tags);
     }
-
+    @Override
+    public Page<TagItemDTO> getAllByPage(Pageable pageable) {
+        Page<TagEntity> tags = tagRepository.findAll(pageable);
+        return tags.map(tagMapper::tagItemDTO);
+    }
     @Override
     public TagItemDTO create(TagCreateDTO dto) throws IOException {
         var entity = tagMapper.tagCreateDTO(dto);
@@ -39,7 +46,7 @@ public class TagServiceImpl implements TagService{
 
     @Override
     public TagItemDTO editTag(TagEditDTO dto) throws IOException {
-        TagEntity entity = new TagEntity();
+        var entity = tagRepository.findById(dto.getId()).orElse(null);
         entity.setName(dto.getName());
         tagRepository.save(entity);
         return tagMapper.tagItemDTO(entity);

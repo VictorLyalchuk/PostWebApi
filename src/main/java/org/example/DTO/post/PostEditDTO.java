@@ -1,7 +1,7 @@
 package org.example.DTO.post;
 
 import lombok.Data;
-import org.example.DTO.PostImageDTO.PostImageDTO;
+import org.example.DTO.postImage.PostImageDTO;
 import org.example.DTO.tag.TagItemDTO;
 
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ public class PostEditDTO {
     private String description;
     private String category;
     private int category_id;
-    private List<PostImageDTO> files = new ArrayList<>();
-    private List<TagItemDTO> tags = new ArrayList<>();
+    private List<PostImageDTO> oldPhotos;
+    private List<PostImageDTO> newPhotos;
+    private List<Integer> tags = new ArrayList<>();
 }

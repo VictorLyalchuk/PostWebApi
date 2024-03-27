@@ -12,27 +12,4 @@ public interface PostMapper {
     @Mapping(source = "category.id", target = "category_id")
     PostItemDTO postItemDTO(PostEntity post);
     PostEntity postCreateDTO(PostCreateDTO postCreateDTO);
-
-
-//    default List<String> mapTags(List<TagEntity> tags) {
-//        return tags.stream()
-//                .map(TagEntity::getName)
-//                .collect(Collectors.toList());
-//    }
-//    default CategoryEntity map(String value) {
-//        CategoryEntity categoryEntity = new CategoryEntity();
-//        categoryEntity.setName(value);
-//        return categoryEntity;
-//    }
-
-//    default List<TagEntity> map(List<String> tags) {
-//        return tags.stream()
-//                .map(tagName -> {
-//                    TagEntity tagEntity = new TagEntity();
-//                    tagEntity.setName(tagName);
-//                    return tagEntity;
-//                })
-//                .collect(Collectors.toList());
-//    }
-
 }

@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @IdClass(PostTagPK.class)
 public class PostTagMapEntity {
     @Id
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private PostEntity post;
 
     @Id
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "tag_id", nullable = false)
     private TagEntity tag;
 }
