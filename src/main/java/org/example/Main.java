@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.Services.DatabaseSeeder;
+import org.example.initializer.DatabaseSeeder;
 import org.example.storage.StorageProperty;
 import org.example.storage.StorageService;
 import org.springframework.boot.CommandLineRunner;

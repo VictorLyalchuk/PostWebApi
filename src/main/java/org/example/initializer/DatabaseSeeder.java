@@ -1,4 +1,4 @@
-package org.example.Services;
+package org.example.initializer;
 
 import org.example.entities.*;
 import org.example.repositories.*;
@@ -35,8 +35,8 @@ public class DatabaseSeeder {
     }
 
     public void SeedAllTables() {
-        seedCategories(20);
-        seedTags(20);
+        seedCategories(10);
+        seedTags(10);
         generatePosts(20);
         generatePostTags(40);
     }
@@ -107,11 +107,14 @@ public class DatabaseSeeder {
         if (postTagRepository.count() < count) {
             var posts = postRepository.findAll();
             var tags = tagRepository.findAll();
-            for (int i = 0; i < count; i++) {
-                PostTagMapEntity postTag = new PostTagMapEntity();
-                postTag.setTag(tags.get(faker.random().nextInt(tags.size())));
-                postTag.setPost(posts.get(faker.random().nextInt(posts.size())));
-                postTagRepository.save(postTag);
+            if (!posts.isEmpty() && !tags.isEmpty()) {
+
+                for (int i = 0; i < count; i++) {
+                    PostTagMapEntity postTag = new PostTagMapEntity();
+                    postTag.setTag(tags.get(faker.random().nextInt(tags.size())));
+                    postTag.setPost(posts.get(faker.random().nextInt(posts.size())));
+                    postTagRepository.save(postTag);
+                }
             }
         }
     }

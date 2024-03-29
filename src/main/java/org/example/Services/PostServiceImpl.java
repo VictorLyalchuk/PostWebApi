@@ -179,9 +179,6 @@ public class PostServiceImpl implements PostService {
                     postImageRepository.save(pi);
                 }
 
-
-
-
                 List<Integer> tagIdsToKeep = new ArrayList<>(model.getTags());
 
                 List<PostTagMapEntity> postTags = post.getPostTags();
@@ -233,8 +230,6 @@ public class PostServiceImpl implements PostService {
 
                 postTagMapEntity.setTag(tag);
                 postTagMapEntity.setPost(post);
-
-//                postTagRepository.deleteById(postTagPK);
 
                 postTagRepository.delete(postTagMapEntity);
             }

@@ -42,7 +42,7 @@ public class AccountService {
                 .build();
     }
 
-    public RegistrationDTO registration(RegistrationDTO dto) {
+    public AuthResponseDTO registration(RegistrationDTO dto) {
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new IllegalStateException("User with email " + dto.getEmail() + " already exists.");
         }
@@ -57,6 +57,10 @@ public class AccountService {
                 .user(user)
                 .build();
         userRoleRepository.save(ur);
-        return registrationMapper.RegistrationDTO(user);
+        var jwtToken = jwtService.generateAccessToken(user);
+
+        return AuthResponseDTO.builder()
+                .token(jwtToken)
+                .build();
     }
 }
